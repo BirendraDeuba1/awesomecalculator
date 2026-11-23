@@ -41,4 +41,24 @@ class CalculatorTests(unittest.TestCase):
         # Act
         result = calculator.Divide(operator1, operator2)
         # Assert
-        self.assertEqual(expected, result, "divide method doesn't work!")        
+        self.assertEqual(expected, result, "divide method doesn't work!")
+
+    def test_divide_by_zero_raises(self):
+        calculator = Calculator()
+        with self.assertRaises(ZeroDivisionError):
+            calculator.Divide(5, 0)
+
+    def test_text_input_is_rejected(self):
+        # Before the fix, Add("2", "3") silently returned "23"
+        calculator = Calculator()
+        with self.assertRaises(TypeError):
+            calculator.Add("2", "3")
+
+    def test_bool_input_is_rejected(self):
+        calculator = Calculator()
+        with self.assertRaises(TypeError):
+            calculator.Multiply(True, 5)
+
+    def test_floats_are_accepted(self):
+        calculator = Calculator()
+        self.assertAlmostEqual(0.3, calculator.Add(0.1, 0.2))
